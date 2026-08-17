@@ -1,0 +1,9 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: backend
+  data:
+    mongodb:
+      uri: mongodb://admin:admin@localhost:27017/myapp?authSource=admin
