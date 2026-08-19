@@ -15,4 +15,9 @@
       <module name="backend" options="-parameters" />
     </option>
   </component>
+  <component name="TypeScriptCompiler">
+    <option name="memoryLimit" value="4096" />
+    <option name="nodeInterpreterTextField" value="$USER_HOME$/.config/nvm/versions/node/v24.15.0/bin/node" />
+    <option name="versionType" value="EMBEDDED" />
+  </component>
 </project>
