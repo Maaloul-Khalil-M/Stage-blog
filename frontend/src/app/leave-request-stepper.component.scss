@@ -1,0 +1,134 @@
+// Requires the app to already have `@include mat.core();` plus a theme
+// mixin set up at the root (that's what establishes the --mat-sys-*
+// variables these tokens build on). This file customizes that theme
+// for the stepper only, scoped to this component's host element.
+//
+// Why :host and not a global stylesheet: Material's token API works via
+// CSS custom properties, which cascade through the DOM regardless of
+// Angular's view-encapsulation boundaries. Setting them on :host means
+// every mat-step-header rendered inside this component picks them up,
+// without touching the rest of the app or reaching for ::ng-deep.
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  // ---- design tokens (referenced by the Tailwind arbitrary-value
+  // classes in the template too, so the two systems stay in sync) ----
+  --ink: #14171f;
+  --paper: #f5f4f0;
+  --teal: #0e5f55;
+  --navy: #1f3a5f;
+  --approved: #1b7f4c;
+  --rejected: #b23a2e;
+  --pending: #b8860b;
+  --hairline: #c8ccd4;
+
+  font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  color: var(--ink);
+
+  @include mat.stepper-overrides((
+    container-color: transparent,
+    line-color: var(--hairline),
+    header-height: 88px,
+    header-icon-background-color: var(--hairline),
+    header-icon-foreground-color: #ffffff,
+    header-label-text-color: #6b7280,
+    header-label-text-weight: 600,
+    header-selected-state-icon-background-color: var(--teal),
+    header-selected-state-icon-foreground-color: #f5f4f0,
+    header-selected-state-label-text-color: var(--ink),
+    header-done-state-icon-background-color: var(--navy),
+    header-done-state-icon-foreground-color: #ffffff,
+    header-edit-state-icon-background-color: var(--navy),
+    header-edit-state-icon-foreground-color: #ffffff,
+    header-error-state-icon-background-color: var(--rejected),
+    header-error-state-icon-foreground-color: #ffffff,
+    header-error-state-label-text-color: var(--rejected),
+  ));
+}
+
+// ---- type roles ----
+// A characterful serif for headings, used sparingly; a plain grotesk for
+// everything else; a monospace for anything that reads like a record —
+// reference numbers, dates, the ledger table.
+.font-display {
+  font-family: 'Fraunces', 'Iowan Old Style', ui-serif, serif;
+}
+
+.font-data {
+  font-family: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+}
+
+// ---- read-only "personnel record" fields ----
+// Deliberately NOT styled as Material text fields: the quiet, boxless
+// typography signals "you can't edit this" more clearly than a greyed-out
+// input box would, and visually separates HR-owned data from the
+// employee's own editable request in step 2.
+//
+// [formField] still applies the native `readonly` attribute to these
+// inputs automatically, because the schema marks each one readonly().
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+}
+
+.profile-value {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 14px;
+  color: var(--ink);
+  cursor: default;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+// ---- the one deliberate flourish ----
+// An ink-stamp status badge on the review step — everything else on the
+// page stays quiet so this is the thing that's remembered.
+.stamp {
+  display: inline-block;
+  padding: 6px 14px;
+  border: 2px solid currentColor;
+  border-radius: 3px;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transform: rotate(-2deg);
+
+  &.approved {
+    color: var(--approved);
+  }
+
+  &.rejected {
+    color: var(--rejected);
+  }
+
+  &.pending {
+    color: var(--pending);
+  }
+}
+
+// ---- ledger table ----
+table.ledger td.negative {
+  color: var(--rejected);
+}
+
+table.ledger tr.total td {
+  font-weight: 700;
+  border-top: 2px solid var(--ink);
+}
